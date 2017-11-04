@@ -18,20 +18,21 @@ public class Board extends JPanel implements ActionListener
 {
     private final int board_width = 500;
     private final int board_height = 500;
-    private final int dot_size = 5;
-    private final int all_dots = 900;
+    private final int trailSpace = 5;
+    private final int all_trail = board_height * board_width;
     private final int speed = 20;
 
-    private final int x[] = new int[all_dots];
-    private final int y[] = new int[all_dots];
+    private final int x[] = new int[all_trail];
+    private final int y[] = new int[all_trail];
 
-    private int dots;
+    private int trail_length;
 
     private boolean leftDirection = false;
     private boolean rightDirection = true;
     private boolean upDirection = false;
     private boolean downDirection = false;
     private boolean inGame = true;
+    public boolean trailState = false;
 
     private Timer timer;
     private Image trail;
@@ -59,8 +60,8 @@ public class Board extends JPanel implements ActionListener
 
     private void initGame()
     {
-        dots = 1;
-        for (int z = 0; z < dots; z++)
+        trail_length = 1;
+        for (int z = 0; z < trail_length; z++)
         {
             x[z] = 50 - z *10;
             y[z] = 50;
@@ -81,7 +82,7 @@ public class Board extends JPanel implements ActionListener
     {
         if (inGame)
         {
-            for (int z = 0; z < dots; z++)
+            for (int z = 0; z < trail_length; z++)
             {
                 if (z == 0)
                 {
@@ -110,38 +111,38 @@ public class Board extends JPanel implements ActionListener
         g.drawString(message, (board_width - meter.stringWidth(message))/2, board_height/2);
     }
 
-    private void checkApple()
+    private void addTrail()
         {
-            dots++;
+            trail_length++;
         }
     private void move()
     {
-        for (int z = dots; z > 0; z--)
+        for (int z = trail_length; z > 0; z--)
         {
             x[z] = x[(z-1)];
             y[z] = y[(z-1)];
         }
         if (leftDirection)
         {
-            x[0] -= dot_size;
+            x[0] -= trailSpace;
         }
         if (rightDirection)
         {
-            x[0] += dot_size;
+            x[0] += trailSpace;
         }
         if (upDirection)
         {
-            y[0] -= dot_size;
+            y[0] -= trailSpace;
         }
         if (downDirection)
         {
-            y[0] += dot_size;
+            y[0] += trailSpace;
         }
     }
 
     private void checkCollision()
     {
-        for (int z = dots; z > 0; z --)
+        for (int z = trail_length; z > 0; z --)
         {
             if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z]))
             {
@@ -175,7 +176,10 @@ public class Board extends JPanel implements ActionListener
     {
         if(inGame)
         {
-            checkApple();
+            if(trailState)
+            {
+                addTrail();
+            }
             checkCollision();
             move();
         }
@@ -212,6 +216,18 @@ public class Board extends JPanel implements ActionListener
                 rightDirection = false;
                 leftDirection = false;
             }
+            if ((key == KeyEvent.VK_SPACE))
+            {
+                if (!trailState)
+                {
+                    trailState = true;
+                }
+                else
+                    {
+                        trailState = false;
+                    }
+            }
+
         }
     }
 }
