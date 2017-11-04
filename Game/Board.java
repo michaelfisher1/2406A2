@@ -18,17 +18,14 @@ public class Board extends JPanel implements ActionListener
 {
     private final int board_width = 500;
     private final int board_height = 500;
-    private final int dot_size = 10;
+    private final int dot_size = 5;
     private final int all_dots = 900;
-    private final int random_position = 29;
-    private final int delay = 140;
+    private final int speed = 20;
 
     private final int x[] = new int[all_dots];
     private final int y[] = new int[all_dots];
 
     private int dots;
-    private int apple_x;
-    private int apple_y;
 
     private boolean leftDirection = false;
     private boolean rightDirection = true;
@@ -38,7 +35,6 @@ public class Board extends JPanel implements ActionListener
 
     private Timer timer;
     private Image trail;
-    private Image apple;
     private Image bike;
 
     public Board()
@@ -57,25 +53,20 @@ public class Board extends JPanel implements ActionListener
         ImageIcon trail_image = new ImageIcon("images/smalldot.png");
         trail = trail_image.getImage();
 
-        ImageIcon apple_image = new ImageIcon("images/smallapple.png");
-        apple = apple_image.getImage();
-
         ImageIcon bike_image = new ImageIcon("images/smalldot.png");
         bike = bike_image.getImage();
     }
 
     private void initGame()
     {
-        dots = 3;
+        dots = 1;
         for (int z = 0; z < dots; z++)
         {
             x[z] = 50 - z *10;
             y[z] = 50;
         }
 
-        locateApple();
-
-        timer = new Timer(delay, this);
+        timer = new Timer(speed, this);
         timer.start();
     }
 
@@ -90,7 +81,6 @@ public class Board extends JPanel implements ActionListener
     {
         if (inGame)
         {
-            g.drawImage(apple, apple_x, apple_y, this);
             for (int z = 0; z < dots; z++)
             {
                 if (z == 0)
@@ -121,13 +111,9 @@ public class Board extends JPanel implements ActionListener
     }
 
     private void checkApple()
-    {
-        if ((x[0] == apple_x) && (y[0] == apple_y))
         {
             dots++;
-            locateApple();
         }
-    }
     private void move()
     {
         for (int z = dots; z > 0; z--)
@@ -182,14 +168,6 @@ public class Board extends JPanel implements ActionListener
         {
             timer.stop();
         }
-    }
-    private void locateApple()
-    {
-        int r = (int) (Math.random()*random_position);
-        apple_x = ((r*dot_size));
-
-        r = (int) (Math.random()* random_position);
-        apple_y = ((r*dot_size));
     }
 
     @Override
