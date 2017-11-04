@@ -18,12 +18,12 @@ public class Board extends JPanel implements ActionListener
 {
     private final int board_width = 500;
     private final int board_height = 500;
-    private final int trailSpace = 5;
-    private final int all_trail = board_height * board_width;
+    private final int trailLocation = 5;
+    private final int trailMax = board_height * board_width;
     private final int speed = 20;
 
-    private final int x[] = new int[all_trail];
-    private final int y[] = new int[all_trail];
+    private int x[] = new int[trailMax];
+    private int y[] = new int[trailMax];
 
     private int trail_length;
 
@@ -124,19 +124,19 @@ public class Board extends JPanel implements ActionListener
         }
         if (leftDirection)
         {
-            x[0] -= trailSpace;
+            x[0] -= trailLocation;
         }
         if (rightDirection)
         {
-            x[0] += trailSpace;
+            x[0] += trailLocation;
         }
         if (upDirection)
         {
-            y[0] -= trailSpace;
+            y[0] -= trailLocation;
         }
         if (downDirection)
         {
-            y[0] += trailSpace;
+            y[0] += trailLocation;
         }
     }
 
